@@ -1,0 +1,33 @@
+{
+  "name": "api-sondfy",
+  "version": "1.0.0",
+  "description": "A API for maneging sondfy playlist and mabe achives uploads in the future.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oTrolado/api-sondfy.git"
+  },
+  "keywords": [
+    "api",
+    "sondfy"
+  ],
+  "author": "Gabriel Carvalho Costa (oTrolado)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oTrolado/api-sondfy/issues"
+  },
+  "homepage": "https://github.com/oTrolado/api-sondfy#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "md5": "^2.2.1",
+    "mongoose": "^5.5.5"
+  }
+}
