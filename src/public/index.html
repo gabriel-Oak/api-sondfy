@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="author" content="Gabriel Carvalho (oTrolado)"/>
+    <title>Sondfy</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/main.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+</head>
+<body onresize="conserta()">
+    <main class="main">
+        <section class="top-content">
+                <div class="menu-div">
+                    
+                        <input type="checkbox" id="check">
+                        <label id="botaoM" for="ceck" onclick="toggleMenu()"><i class="fas fa-bars color-pink-red"></i></label>
+                        
+                    </div>
+
+            <nav id="navigator" class="side-nav">
+                
+
+                <article class="library">
+                        <h2>BIBLIOTECA</h2>
+                        <ul class="library-options">
+                            <li onclick="router(this); toggleMenu()" id="playlists-link" class="links color-pink-red"><i class="fas fa-file-audio"></i> PLAYLISTS</li>
+                            <li onclick="router(this); toggleMenu()" id="artistas-link" class="links color-pink-red"><i class="fas fa-user-alt"></i> ARTISTAS</li>
+                            <li onclick="router(this); toggleMenu()" id="albuns-link" class="links color-pink-red"><i class="fas fa-dot-circle"></i> ÁLBUNS</li>
+                            <li onclick="router(this); toggleMenu()" id="musicas-link" class="links color-pink-red"><i class="fas fa-music"></i> MÚSICAS</li>
+                        </ul>
+                    </article>
+    
+            </nav>
+            <article class="content">
+
+                <article id="container-musicas" class="secoes">
+                    <h1>MÚSICAS</h1>
+                    <ul id="lista-default" class="lista">
+
+                    </ul>
+                </article>
+
+                <article id="container-playlists" class="offline secoes">
+                    <h1>PLAYLISTS</h1>
+                    <section id="secao-de-playlist">
+                        <div class="playlist" onclick="newPlaylist();">
+                            <h1>Nova playlist</h1>
+                            <p><i class="fas fa-plus"></i></p>
+                        </div>
+                    </section>
+                    
+                </article>
+                
+                <article id="container-artistas" class="offline secoes">
+                    <h1>ARTISTAS</h1>
+                    <section id="secao-de-artistas">
+
+                    </section>
+                </article>
+
+                <article id="container-albuns" class="offline secoes">
+                    <h1>ÁLBUNS</h1>
+                    <section id="secao-de-albuns">
+
+                    </section>
+                    
+                </article>
+
+                <img id="capa" src="imagens/capa.jpg" alt="imagens de capa"/>
+
+            </article>
+        </section>
+        <section class="bot-content">
+            <div class="musica-atual" id="musica-atual">
+                <h3>Lorem Ipsum</h3>
+                <span>Mario e os fronts</span>
+            </div>
+            <button class="botao color-pink-red arrow" onclick="prev()"><i class="fas fa-backward"></i></button>
+            <button class="botao color-pink-red play" onclick="pausePlay()"><i class="fas fa-caret-right" id="icone-play"></i></button>
+            <button class="botao color-pink-red arrow" onclick="next()"><i class="fas fa-forward"></i></button>
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+                <div id="progress-captor"></div>
+                <audio src="" id="audio" onended="playerEnd()" ></audio>
+            </div>
+            <span id="tempo"></span>
+            <button class="botao color-pink-red loops" id="random" onclick="toggleRandom()"><i class="fas fa-random"></i></button>
+            <button class="botao color-pink-red loops" id="repeat" onclick="toggleRepeat()"><i class="fas fa-redo-alt"></i></button>
+            <button class="botao color-pink-red loops" id="volume" onclick="toggleVolume()"><i class="fas fa-volume-up"></i></button>
+            <div id="volume-container">
+                <div id="volume-bar"></div>
+                <div id="volume-captor"></div>
+            </div>
+        </section>
+
+        <section class="form-container" id="form-container-playlist">
+            <div id="form-playlist">
+                <form onsubmit="return salvarPl(this)">
+                    <label for="titulo">Titulo</label>
+                    <input type="text" name="titulo" id="input-name" placeholder="Nome da sua playlist" required="true">
+                    <div style="overflow-y: auto; height: 60vh;">
+                        <ul id="lista-playlist" class="lista">
+
+                        </ul>
+                    </div>
+                    <input type="submit" style="color: #f22293; cursor: pointer;"></input>
+                </form>
+                <button class="cancelar-button" onclick="cancelarPlaylist()">Cancelar</button>
+            </div>
+        </section>
+
+        
+        <section class="form-container login" id="login-container">
+            <div id="form-singin" class="form">
+                <h1>Cadastrar</h1>
+                <form onsubmit="return cadastrar(this)">
+                    <label for="name">Nome</label>
+                    <input type="text" name="name" id="input-name-singin" placeholder="Seu nome" required="true">
+                    <label for="user">Usuário</label>
+                    <input type="text" name="user" id="input-user-singin" placeholder="Seu usuário" required="true">
+                    <label for="password">Senha</label>
+                    <input type="password" name="password" id="input-password-singin" placeholder="Sua senha" required="true">
+                    <label for="repassword">Confirme sua senha</label>
+                    <input type="password" name="repassword" id="input-repassword-singin" placeholder="Confirme sua senha" required="true">
+                    
+                    <input type="submit" style="color: #f22293; cursor: pointer; width: 98%"></input>
+                </form>
+            </div>
+            <div id="form-login" class="form">
+                <h1>Logar</h1>
+                <form onsubmit=" return logar(this)">
+                    <label for="user">Usuário</label>
+                    <input type="text" name="user" placeholder="Seu usuário" required="true">
+                    <label for="password">Senha</label>
+                    <input type="password" name="password" placeholder="Sua senha" required="true">
+                                        
+                    <input type="submit" style="color: #f22293; cursor: pointer; width: 98%"></input>
+                </form>
+            </div>
+        </section>
+
+        <section id="animation-frame">
+            <div>
+                <svg viewBox="0 0 100 100">
+                    <polygon stroke='#1d2d3c' stroke-width='5' points='50,5 5,95 50,70 95,95' fill='none'/>
+                </svg>
+            </div>
+        </section>
+
+    </main>
+    
+
+    <script type="text/javascript" src="controllers/router.js"></script>
+    <script type="text/javascript" src="controllers/data.js"></script>
+    <script type="text/javascript" src="controllers/main.js"></script>
+    <script type="text/javascript" src="controllers/teste.js"></script>
+
+</body>
+</html>
