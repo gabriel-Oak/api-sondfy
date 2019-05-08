@@ -9,6 +9,7 @@ let textoMusica = document.getElementById('musica-atual');
 let inPlaylist = false;
 let random = false;
 let progressBar = document.getElementById('progress-bar');
+let progressTimer;
 let currentList = [];
 let listaTracks;
 
@@ -29,24 +30,6 @@ function unselect(items){
     return items;
 } 
 
-
-function toggleMenu(){
-    let menu = document.getElementById('navigator');
-    if(window.innerWidth < 768){
-        if(!menu.classList.contains('no-nav')) {
-
-            menu.classList.add('side-nav', 'no-nav');
-            setTimeout(() => menu.style.display = 'none', 400);
-    
-        }
-        else {
-    
-            menu.style.display = 'block';
-            menu.classList.replace('no-nav', 'side-nav');
-    
-        }
-    }
-}
 
 function conserta(){
     if(window.innerWidth > 768 ){
@@ -101,10 +84,15 @@ function tocar(nome){
     document.getElementById('capa').src = dadosMusica[0].img;
 
     playing = true;
-    player.play();
+    //player.play();
+    window.clearInterval(progressTimer);
     setTimeout(progresBar(parseInt(player.currentTime),1010));
     player.setAttribute('playing', nome);
     return player.getAttribute('playing');
+}
+
+function canplay(audio){
+    audio.play();
 }
 
 function playerEnd(){
@@ -120,22 +108,22 @@ function playerEnd(){
             if( inPlaylist ) return listaTracks[0].tracks.map(musica => {
                 
                 if(musica == nome){
-                    if(listaTracks[0].tracks[i+1]) setTimeout(tocar(listaTracks[0].tracks[i+1]),1000);
-                    else setTimeout(tocar(listaTracks[0].tracks[0]),1000);
+                    if(listaTracks[0].tracks[i+1]) tocar(listaTracks[0].tracks[i+1]);
+                    else tocar(listaTracks[0].tracks[0]);
                 }
                 else i++;
             });
-            else if(musicas.filter(musica => musica.id == nome+1).length != 0) return setTimeout(tocar(++nome),1010);
-            else return setTimeout(tocar(0),1000);
+            else if(musicas.filter(musica => musica.id == nome+1).length != 0) return tocar(++nome);
+            else return tocar(0);
         
         } else if(random && !player.loop){
 
             if(inPlaylist){
-                return setTimeout(tocar(listaTracks[0].tracks[Math.floor(Math.random() * parseFloat(listaTracks[0].tracks.length - 0.1))]),1010); 
+                return tocar(listaTracks[0].tracks[Math.floor(Math.random() * parseFloat(listaTracks[0].tracks.length - 0.1))]); 
             } 
-            else return setTimeout(tocar(Math.floor(Math.random() * parseFloat(musicas.length - 0.1))),1010);
+            else return tocar(Math.floor(Math.random() * parseFloat(musicas.length - 0.1)));
 
-        } else if(player.loop) return setTimeout(tocar(nome),1010);
+        } else if(player.loop) return tocar(nome)
 
         return false;
     } 
@@ -147,6 +135,7 @@ function pausePlay(){
         
             playing = false;
             iconePlayer.classList.replace('fa-pause','fa-caret-right');
+            window.clearInterval(progressTimer);
             return player.pause();
     
         } else{
@@ -163,7 +152,7 @@ function pausePlay(){
 function progresBar(){
 
     if(playing){
-        setTimeout(function(){
+        progressTimer = setTimeout(()=>{
             let tempo = document.getElementById('tempo');
             let total = player.duration;
             let current = player.currentTime;
@@ -173,7 +162,7 @@ function progresBar(){
             progressBar.style.width = percent+'%';
             tempo.innerText = '-' + parseInt((player.duration - player.currentTime) / 60) + ':' + min;
             progresBar();
-        },1000);
+        },500);
     } 
 }
 
@@ -208,15 +197,6 @@ function toggleRandom(){
 
 }
 
-function toggleVolume(){
-    let volume = document.getElementById('volume-container');
-    if(window.innerWidth < 1200){
-        if(volume.style.display == 'none' || volume.style.display == '') return volume.style.display = 'block';
-        else return volume.style.display = 'none'
-    } 
-    return false;
-}
-
 document.getElementById('volume-captor').addEventListener('mousedown', (event) => {
     let click = event.layerX;
     let total = event.srcElement.clientWidth;
@@ -236,7 +216,7 @@ function prev(){
 function next(){
     return playerEnd();
 }
-
+ 
 function cadastrar(form){
     loading.style.display = "block";
     if(form.password.value == form.repassword.value){
@@ -245,7 +225,6 @@ function cadastrar(form){
             "user": form.user.value,
             "password": form.password.value
         }
-        console.log(user);
         fetchSingin(user);
     } else{
         alert('Por favor redigite a senha');
