@@ -67,7 +67,7 @@ controller.savePlaylist = (req, res) => {
                         if(user){
                             res.sendStatus(200);
                         } else {
-                            res.sendStatus(500);
+                            res.sendStatus(404);
                         }
                     },
                     (erro) => {
@@ -77,6 +77,42 @@ controller.savePlaylist = (req, res) => {
                 );
             } else {
                 res.sendStatus(404);
+            }
+        }
+    );
+}
+
+controller.deletePlaylist = (req, res) => {
+    let _id = req.body._id;
+    let title = req.body.title;
+
+    User.findById(_id).exec().then(
+        (user) => {
+            if(user){
+                for(i = 0; i < user.playlists.length; i++){
+                    let pl = JSON.parse(user.playlists[i]);
+                    console.log(pl);
+                    if(pl.title == title){
+                        user.playlists.splice(i, 1);
+                        console.log('deu');
+                    }
+                }
+                User.findByIdAndUpdate(_id, user).exec().then(
+                    (user) => {
+                        if(user){
+                            res.sendStatus(200);
+                        } else {
+                            res.sendStatus(404);
+                        }
+                    },
+                    (erro) => {
+                        console.error(erro);
+                        res.json(erro).sendStatus(400);
+                    }
+
+                );
+            } else {
+                res.sendStatus(400);
             }
         }
     );

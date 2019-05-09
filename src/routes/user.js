@@ -6,5 +6,6 @@ router.post('/', controller.singin);
 router.post('/:user', controller.login);
 router.put('/:id', controller.savePlaylist);
 router.get('/:user', controller.getPlaylists);
+router.delete('/', controller.deletePlaylist);
 
 module.exports = router;
