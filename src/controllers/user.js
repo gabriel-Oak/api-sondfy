@@ -26,7 +26,6 @@ controller.login = (req, res) => {
 }
 
 controller.singin = (req, res) => {
-    console.log(req.body);
     try{
         
         User.create({
@@ -85,16 +84,13 @@ controller.savePlaylist = (req, res) => {
 controller.deletePlaylist = (req, res) => {
     let _id = req.body._id;
     let title = req.body.title;
-
     User.findById(_id).exec().then(
         (user) => {
             if(user){
                 for(i = 0; i < user.playlists.length; i++){
                     let pl = JSON.parse(user.playlists[i]);
-                    console.log(pl);
                     if(pl.title == title){
                         user.playlists.splice(i, 1);
-                        console.log('deu');
                     }
                 }
                 User.findByIdAndUpdate(_id, user).exec().then(
