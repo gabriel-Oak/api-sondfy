@@ -26,19 +26,27 @@ controller.login = (req, res) => {
 }
 
 controller.singin = (req, res) => {
-    try{
+    User.findOne({user:user}).exec().then(
+        (user) => {
+            if(user){
+                res.sendStatus(403);
+            } else {
+                try{
         
-        User.create({
-            name: req.body.name,
-            user: req.body.user,
-            password: md5(req.body.password + global.SALT_KEY)
-        });
-        res.sendStatus(201);
-
-    } catch(e){
-        res.status(500).send(e);
-        throw e;
-    }
+                    User.create({
+                        name: req.body.name,
+                        user: req.body.user,
+                        password: md5(req.body.password + global.SALT_KEY)
+                    });
+                    res.sendStatus(201);
+            
+                } catch(e){
+                    res.status(500).send(e);
+                    throw e;
+                }
+            }
+        }
+    );
 }
 
 controller.getPlaylists = (req, res) => {
