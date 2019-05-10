@@ -26,7 +26,7 @@ controller.login = (req, res) => {
 }
 
 controller.singin = (req, res) => {
-    User.findOne({user:user}).exec().then(
+    User.findOne({user:req.body.user}).exec().then(
         (user) => {
             if(user){
                 res.sendStatus(403);
